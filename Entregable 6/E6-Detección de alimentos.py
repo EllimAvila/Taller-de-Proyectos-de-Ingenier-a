@@ -196,6 +196,8 @@ def fruta(lados,color):
     nfruta ='Desconocido'
     if lados <= 9 and color=='Amarillo':
         nfruta='Platano'
+    elif lados > 9 and color=='Verde':
+        nfruta='Limon'
     elif lados > 9 and color=='Amarillo':
         nfruta='Limon'
     else:
