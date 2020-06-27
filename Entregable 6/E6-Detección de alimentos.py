@@ -170,26 +170,37 @@ def nombreFigura(contorno,base,altura):
     if len(vertices)==4:
         relacionAspecto=float(base)/altura
         if (relacionAspecto > 0.5 and relacionAspecto <= 1.2):
-            nombre='Cuadrado' 
+            nombre=4 
         else:
             nombre='Rectangulo'
     elif len(vertices)==5:
-        nombre='Pentagono'
+        nombre=5
     elif len(vertices)==6:
-        nombre='Hexagono'
+        nombre=6
     elif len(vertices)==7:
-        nombre='Platano'
+        nombre=7
     elif len(vertices)==8:
-        nombre='Platano'
+        nombre=8
     elif len(vertices)==9:
-        nombre='Eneagono'
+        nombre=9
     elif len(vertices)==10:
-        nombre='Decagono'
+        nombre=10
     elif len(vertices)>10:
-        nombre='Circulo'
+        nombre=11
     
     
     return nombre;
+
+"""Modulo para determinar frutas"""
+def fruta(lados,color):
+    nfruta ='Desconocido'
+    if lados <= 9 and color=='Amarillo':
+        nfruta='Platano'
+    elif lados > 9 and color=='Amarillo':
+        nfruta='Limon'
+    else:
+        nfruta='Desconocido'
+    return nfruta
 
 """Módulo para rastrear los colores en la imagen de la cámara"""
 def rastrearColor(aislarColor, color,fotograma,HSV):
@@ -207,9 +218,10 @@ def rastrearColor(aislarColor, color,fotograma,HSV):
             """Funciones para el nombre y color"""
             nombreDelColor=colorFigura(figuraAislada) 
             nombre=nombreFigura(i,c,d) 
-            figuraColor=nombre+' '+nombreDelColor
+            # figuraColor=nombre+' '+nombreDelColor
+            nombrefruta=fruta(nombre, nombreDelColor)
             cv2.drawContours(fotograma, [i], 0, color,3)
-            cv2.putText(fotograma, figuraColor, (a,b-5), 1, 1, color,2)
+            cv2.putText(fotograma, nombrefruta, (a,b-5), 1, 1, color,2)
 
 
 
