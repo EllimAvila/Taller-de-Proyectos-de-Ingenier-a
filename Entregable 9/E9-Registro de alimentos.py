@@ -12,7 +12,7 @@ import cv2
 """
 Conexión a la camara
 """
-conexionCamara=cv2.VideoCapture(1)
+conexionCamara=cv2.VideoCapture(0)
 """
 bucle para recepción de fotogramas
 """
@@ -41,7 +41,7 @@ while conexionCamara.isOpened():
                 """
                 Se guarda la captura 
                 """
-                cv2.imwrite('temp_pimiento.jpg',recorte)
+                cv2.imwrite('temp_platano.jpg',recorte)
                 """Se muestra la captura obtenida"""
                 cv2.imshow('Patrón', recorte)
         if cv2.waitKey(20) & 0xFF ==ord('s'):

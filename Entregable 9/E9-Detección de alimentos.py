@@ -25,7 +25,7 @@ umbral- Cantidad numérica referente al porcentaje de coincidencia de la
 color- Color empleado para el trazo del marco del objeto encontrado y el 
        texto que acompaña a este
 """
-def buscarFruta(nombre,fotograma,umbral,color):
+def buscarAlimento(nombre,fotograma,umbral,color):
     # Seleccinar la imagen temp a procesar mediante concatenación
     modelo=cv2.imread('temp_'+nombre+'.jpg')
     # Asignación de ancho y alto de la imagen temp
@@ -46,30 +46,30 @@ def buscarFruta(nombre,fotograma,umbral,color):
     Obtención de valores con el máximo grado de coincidencia
     """
     
-    coincidencia=np.where(busqueda > 0.87)
+    coincidencia=np.where(busqueda > 0.83)
     
-    for pt in zip(*coincidencia[::-1]): 
-        cv2.rectangle(fotograma, pt, (pt[0] + ancho, pt[1] + alto-20), color, 1)
+    for j in zip(*coincidencia[::-1]): 
+        cv2.rectangle(fotograma, j, (j[0] + ancho, j[1] + alto-20), color, 1)
     
     
-    _, max_val,_, max_loc = cv2.minMaxLoc(busqueda)
+    _, valorMaximo,_, posicionMaximo = cv2.minMaxLoc(busqueda)
     """
     Delimitación de coordenadas superior izquierda e inferior derecha
     """
-    top_left = max_loc
-    bottom_right = (top_left[0] + ancho, top_left[1] + alto-20)
+    superiorIzquierda = posicionMaximo
+    inferiorDerecha = (superiorIzquierda[0] + ancho, superiorIzquierda[1] + alto-20)
     """
     Si el máximo valor de coincidencia encontrado supera el umbral 
     establecido, se procede con el enmarcado del objeto en pantalla
     """
-    if max_val > umbral:
-        cv2.rectangle(fotograma, (top_left[0],top_left[1]+ 6), bottom_right, color, 3)
-        cv2.putText(fotograma, nombre, (top_left[0],top_left[1]-15), 2, 1, color,2)
+    if valorMaximo > umbral:
+        cv2.rectangle(fotograma, (superiorIzquierda[0],superiorIzquierda[1]+ 6), inferiorDerecha, color, 3)
+        cv2.putText(fotograma, nombre, (superiorIzquierda[0],superiorIzquierda[1]-15), 2, 1, color,2)
     
     
 """MAIN"""
 # Conexión con la cámara
-conexionCamara=cv2.VideoCapture(1)
+conexionCamara=cv2.VideoCapture(0)
 # bucle para recepción de fotogramas
 while conexionCamara.isOpened():
     recibe,fotograma=conexionCamara.read()#Se obtienen lecturas de la webcam
@@ -77,22 +77,15 @@ while conexionCamara.isOpened():
         """
         Instancias del procedimiento buscarFruta
         """
-        """galleta"""
-        buscarFruta('galleta',fotograma,0.55,(0,64,128))
-       
-        """pimiento"""
-        buscarFruta('pimiento',fotograma,0.75,(0,0,255))
-        
-        """huevo"""
-        buscarFruta('huevo',fotograma,0.7,(96,136,235))
-        
-        """limon"""
-        buscarFruta('limon',fotograma,0.8,(0,250,0))
-        
-        """milo"""
-        buscarFruta('milo',fotograma,0.5,(0,48,0))
-        """platano"""
-        buscarFruta('platano',fotograma,0.7,(9,158,224))
+        """Limón"""
+        buscarAlimento('limon', fotograma, 0.7, (0,240,0))
+        """Plátano"""
+        buscarAlimento('platano', fotograma, 0.7, (0,154,255))
+        """Mandarina"""
+        buscarAlimento('mandarina', fotograma, 0.75, (0,81,250))
+        """Atún"""
+        buscarAlimento('atun', fotograma, 0.7, (255,0,0))
+    
         """Muestra de resultados"""
         cv2.imshow('ventana', fotograma)
         if cv2.waitKey(20) & 0xFF ==ord('s'):
